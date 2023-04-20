@@ -48,8 +48,9 @@ public class Main extends Thread {
                         continue;
                     }
                     this.handleReceiveFile(commandArguments[1], inputStream);
-                } else
+                } else {
                     System.out.println(companionName + ": " + receivedMessage);
+                }
             }
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -69,7 +70,7 @@ public class Main extends Thread {
                 fileOutputStream.write(fileBuffer, 0, byteCount);
                 sizeOfFileLeft -= byteCount;
             }
-            System.out.println("File received successfully!");
+            System.out.println(fileName + " received successfully!");
             fileOutputStream.close();
         } catch (IOException ioException) {
             System.err.println("IO Exception encountered " + ioException.getMessage());
@@ -115,8 +116,7 @@ public class Main extends Thread {
                             System.err.println("Provided command does not follow the specified format of 2 arguments");
                             continue;
                         }
-                        // writeTo(outputStream, message);
-                        this.sendFile(commandArguments, outputStream);
+                        this.sendFile(commandArguments, message, outputStream);
                     } else {
                         writeTo(outputStream, message);
                     }
@@ -128,7 +128,7 @@ public class Main extends Thread {
             }
         }
 
-        public void sendFile(String[] commands, ObjectOutputStream outputStream) {
+        public void sendFile(String[] commands, String message, ObjectOutputStream outputStream) {
             try {
                 String fileName = commands[1];
                 String projectRootFolderPath = (new File(".")).getCanonicalPath();
@@ -146,7 +146,7 @@ public class Main extends Thread {
                 if (!wasFileFound) {
                     System.err.println("The requested file was not found");
                 } else {
-                    writeTo(outputStream, "transfer test.txt");
+                    writeTo(outputStream, message);
                     int byteCount = 0;
                     FileInputStream fileInputStream = new FileInputStream(requiredFile);
                     long fileLength = requiredFile.length();
@@ -156,7 +156,7 @@ public class Main extends Thread {
                         outputStream.write(fileBuffer, 0, byteCount);
                         outputStream.flush();
                     }
-                    System.out.println("File uploaded successfully!");
+                    System.out.println("File sent successfully!");
                     fileInputStream.close();
                 }
             } catch (IOException ioException) {
