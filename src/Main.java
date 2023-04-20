@@ -1,4 +1,5 @@
 import java.io.*;
+import java.net.ConnectException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -53,7 +54,7 @@ public class Main extends Thread {
                 }
             }
         } catch (Exception exception) {
-            exception.printStackTrace();
+            System.out.println("Connection closed");
         }
     }
 
@@ -122,9 +123,16 @@ public class Main extends Thread {
                     }
                 }
             } catch (NumberFormatException exception) {
-                exception.printStackTrace();
+                System.out.println("Port provided is not a number.");
+                this.performCompanionConnectionAndWriting();
+            } catch (ConnectException connectException) {
+                System.err.println("The Server connection failed " + connectException.getMessage());
+                this.performCompanionConnectionAndWriting();
             } catch (IOException exception) {
-                exception.printStackTrace();
+                System.out.println("Invalid input/output encountered");
+                this.performCompanionConnectionAndWriting();
+            } catch (Exception exception) {
+                System.out.println("Connection closed.");
             }
         }
 
@@ -176,7 +184,7 @@ public class Main extends Thread {
             outputStream.writeObject(message);
             outputStream.flush();
         } catch (IOException exception) {
-            exception.printStackTrace();
+            System.out.println("Failed to write to output stream");
         }
     }
 }
