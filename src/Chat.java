@@ -3,7 +3,7 @@ import java.net.ConnectException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Main extends Thread {
+public class Chat extends Thread {
     public final String name;
     private static final String SPACE_SEPARATOR = "\\s+";
 
@@ -12,11 +12,11 @@ public class Main extends Thread {
     private static final int FILE_CHUNK_SIZE = 1024;
 
     public static void main(String[] args) {
-        Main mainThread = new Main(args[0]);
+        Chat mainThread = new Chat(args[0]);
         mainThread.start();
     }
 
-    public Main(String name) {
+    public Chat(String name) {
         this.name = name;
     }
 
